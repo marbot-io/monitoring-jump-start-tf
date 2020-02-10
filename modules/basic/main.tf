@@ -121,11 +121,11 @@ resource "aws_budgets_budget" "default" {
   depends_on = [aws_sns_topic_subscription.default]
   count = var.budget_threshold >= 0 ? 1 : 0
 
-  budget_type = "COST"
-  cost_filters = {
-    LinkedAccount = data.aws_caller_identity.default.account_id
+  budget_type                  = "COST"
+  cost_filters                 = {
+    LinkedAccount              = data.aws_caller_identity.default.account_id
   }
-  cost_types   = {
+  cost_types {
     include_credit             = false
     include_discount           = true
     include_other_subscription = false
@@ -138,23 +138,24 @@ resource "aws_budgets_budget" "default" {
     use_amortized              = false
     use_blended                = false
   }
-  limit_amount = var.budget_threshold
-  limit_unit   = "USD"
-  time_unit    = "MONTHLY"
+  limit_amount                 = var.budget_threshold
+  limit_unit                   = "USD"
+  time_unit                    = "MONTHLY"
+  time_period_start            = "2019-01-01_12:00"
 
   notification {
-    comparison_operator       = "GREATER_THAN"
-    threshold                 = 100
-    threshold_type            = "PERCENTAGE"
-    notification_type         = "ACTUAL"
-    subscriber_sns_topic_arns = [aws_sns_topic.default.arn]
+    comparison_operator        = "GREATER_THAN"
+    threshold                  = 100
+    threshold_type             = "PERCENTAGE"
+    notification_type          = "ACTUAL"
+    subscriber_sns_topic_arns  = [aws_sns_topic.default.arn]
   }
   notification {
-    comparison_operator       = "GREATER_THAN"
-    threshold                 = 100
-    threshold_type            = "PERCENTAGE"
-    notification_type         = "FORECASTED"
-    subscriber_sns_topic_arns = [aws_sns_topic.default.arn]
+    comparison_operator        = "GREATER_THAN"
+    threshold                  = 100
+    threshold_type             = "PERCENTAGE"
+    notification_type          = "FORECASTED"
+    subscriber_sns_topic_arns  = [aws_sns_topic.default.arn]
   }
 }
 
