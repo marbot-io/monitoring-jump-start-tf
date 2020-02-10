@@ -6,8 +6,11 @@ terraform {
 
 provider "aws" {}
 
+data "aws_partition" "current" {}
+
 data "aws_caller_identity" "default" {}
 
+data "aws_region" "current" {}
 
 
 ##########################################################################
@@ -119,7 +122,7 @@ JSON
 
 resource "aws_budgets_budget" "default" {
   depends_on = [aws_sns_topic_subscription.default]
-  count = var.budget_threshold >= 0 ? 1 : 0
+  count = (data.aws_region.current.name == "us-east-1" && var.budget_threshold >= 0) ? 1 : 0
 
   budget_type                  = "COST"
   cost_filters                 = {
@@ -178,7 +181,7 @@ resource "aws_cloudwatch_event_rule" "root_user_login" {
   "detail": {
     "userIdentity": {
       "arn": [
-        "arn:aws:iam::${data.aws_caller_identity.default.account_id}:root"
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.default.account_id}:root"
       ]
     }
   }
