@@ -1,15 +1,16 @@
 # Free Monitoring Templates for Terraform
+
+> **Public beta**: This project is work in progress. If you are looking for a stable soltuion, we recommend our Jump Starts based on [CloudFormation templates](https://github.com/marbot-io/monitoring-jump-start).
+
 Setting up monitoring on AWS is hard. There are countless monitoring possibilities on AWS. Overlooking the important settings is easy. Monitoring Jump Starts connect you with all relevant AWS sources for comprehensive monitoring coverage.
 
-Jump Starts are [CloudFormation templates](https://github.com/marbot-io/monitoring-jump-start) or [Terraform modules](https://github.com/marbot-io/monitoring-jump-start-tf) that you can deploy to your AWS account to setup CloudWatch Alarms, CloudWatch Event Rules, and much more.
+Jump Starts are [CloudFormation templates](https://github.com/marbot-io/monitoring-jump-start) or Terraform modules that you can deploy to your AWS account to setup CloudWatch Alarms, CloudWatch Event Rules, and much more.
 
 At the moment, you can monitor:
 
 | Monitoring goal | Module Source                                                                   |
 | --------------- | ------------------------------------------------------------------------------- |
 | AWS basics      | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic` |
-
-> **Public beta**: This project is work in progress. If you are looking for a stable soltuion, we recommend our Jump Starts based on [CloudFormation templates](https://github.com/marbot-io/monitoring-jump-start).
 
 ## Usage
 

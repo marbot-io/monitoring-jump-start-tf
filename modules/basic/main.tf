@@ -97,6 +97,30 @@ JSON
 
 ##########################################################################
 #                                                                        #
+#                                 ALARMS                                 #
+#                                                                        #
+##########################################################################
+
+# TODO implement alarms
+
+##########################################################################
+#                                                                        #
+#                              SUBSCRIPTIONS                             #
+#                                                                        #
+##########################################################################
+
+TODO implemenet subscription
+
+##########################################################################
+#                                                                        #
+#                                 BUDGET                                 #
+#                                                                        #
+##########################################################################
+
+TODO implement budget
+
+##########################################################################
+#                                                                        #
 #                                 EVENTS                                 #
 #                                                                        #
 ##########################################################################
@@ -328,7 +352,6 @@ resource "aws_cloudwatch_event_target" "auto_scaling_failed" {
 
 
 
-
 resource "aws_cloudwatch_event_rule" "guard_duty_finding" {
   depends_on = [aws_sns_topic_subscription.default]
   description = "Findings from AWS GuardDuty (created by marbot)."
@@ -472,4 +495,280 @@ resource "aws_cloudwatch_event_target" "glue_job_failed" {
 }
 
 
-# TODO continue with EC2SpotInstanceInterruptionEvent
+
+resource "aws_cloudwatch_event_rule" "ec2_spot_instance_interruption" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "EC2 Spot Instance interrupted (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.ec2"
+  ],
+  "detail-type": [
+    "EC2 Spot Instance Interruption Warning"
+  ]
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ec2_spot_instance_interruption" {
+  rule      = aws_cloudwatch_event_rule.ec2_spot_instance_interruption.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ecs_service_failed" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "ECS Service failed (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.ec2"
+  ],
+  "detail-type": [
+    "ECS Service Action"
+  ],
+  "detail": {
+    "eventType": [
+      "ERROR",
+      "WARN"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ecs_service_failed" {
+  rule      = aws_cloudwatch_event_rule.ecs_service_failed.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "macie_alert" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "Alerts from AWS Macie (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.macie"
+  ],
+  "detail-type": [
+    "Macie Alert"
+  ]
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "macie_alert" {
+  rule      = aws_cloudwatch_event_rule.macie_alert.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "security_hub_finding" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "Findings from AWS SecurityHub (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.securityhub"
+  ],
+  "detail-type": [
+    "Security Hub Findings - Imported"
+  ]
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "security_hub_finding" {
+  rule      = aws_cloudwatch_event_rule.security_hub_finding.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ops_works_deployment_failed" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "An OpsWorks deployment failed (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.opsworks"
+  ],
+  "detail-type": [
+    "OpsWorks Deployment State Change"
+  ],
+  "detail": {
+    "status": [
+      "failed"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ops_works_deployment_failed" {
+  rule      = aws_cloudwatch_event_rule.ops_works_deployment_failed.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ops_works_command_failed" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "An OpsWorks command failed (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.opsworks"
+  ],
+  "detail-type": [
+    "OpsWorks Command State Change"
+  ],
+  "detail": {
+    "status": [
+      "failed",
+      "expired",
+      "skipped"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ops_works_command_failed" {
+  rule      = aws_cloudwatch_event_rule.ops_works_command_failed.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ops_works_instance_failed" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "An OpsWorks instance failed (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.opsworks"
+  ],
+  "detail-type": [
+    "OpsWorks Instance State Change"
+  ],
+  "detail": {
+    "status": [
+      "connection_lost",
+      "setup_failed",
+      "start_failed",
+      "stop_failed"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ops_works_instance_failed" {
+  rule      = aws_cloudwatch_event_rule.ops_works_instance_failed.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ops_works_alert" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "Alerts from AWS OpsWorks (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.opsworks"
+  ],
+  "detail-type": [
+    "OpsWorks Alert"
+  ]
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ops_works_alert" {
+  rule      = aws_cloudwatch_event_rule.ops_works_alert.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "ecr_image_scan_finding" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "Findings from AWS ECR Image Scans (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.ecr"
+  ],
+  "detail-type": [
+    "ECR Image Scan"
+  ],
+  "detail": {
+    "finding-severity-counts": {
+      "CRITICAL": [{"exists": false}, {"numeric": [">", 0]}],
+      "HIGH": [{"exists": false}, {"numeric": [">", 0]}],
+      "MEDIUM": [{"exists": false}, {"numeric": [">", 0]}],
+      "UNDEFINED": [{"exists": false}, {"numeric": [">", 0]}]
+    }
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "ecr_image_scan_finding" {
+  rule      = aws_cloudwatch_event_rule.ecr_image_scan_finding.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "dlm_policy_alert" {
+  depends_on = [aws_sns_topic_subscription.default]
+  description = "Alerts from Amazon Data Lifecycle Manager (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.dlm"
+  ],
+  "detail-type": [
+    "DLM Policy State Change"
+  ],
+  "detail": {
+    "state": [
+      "ERROR"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "dlm_policy_alert" {
+  rule      = aws_cloudwatch_event_rule.dlm_policy_alert.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.default.arn
+}
+
+
+
+##########################################################################
+#                                                                        #
+#                                  TEST                                  #
+#                                                                        #
+##########################################################################
+
+# TODO implemenet test
