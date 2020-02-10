@@ -921,4 +921,9 @@ resource "aws_cloudwatch_event_target" "dlm_policy_alert" {
 #                                                                        #
 ##########################################################################
 
-# TODO implemenet test
+data "http" "test" {
+  depends_on = [aws_sns_topic_subscription.default]
+  count = var.test ? 1 : 0
+
+  url = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}?AccountId=${data.aws_caller_identity.default.account_id}&Region=${data.aws_region.current.name}&Message=Test%20alert"
+}

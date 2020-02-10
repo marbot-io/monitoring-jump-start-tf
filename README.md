@@ -21,8 +21,7 @@ module "basic" {
   source = "git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic"
 
   endpoint_id = "" # to get this value: select a Slack channel where marbot belongs to and send a message like this: "@marbot show me my endpoint id"
-
-  budget_threshold = 100 # in USD
+  budget_threshold = 10 # in USD
 }
 ```
 3. Run the following commands:
