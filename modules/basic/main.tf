@@ -280,7 +280,7 @@ resource "aws_cloudwatch_event_rule" "code_pipeline_notifications" {
     "aws.codepipeline"
   ],
   "detail-type": [
-    "CodePipeline Stage Execution State Change"
+    "CodePipeline Pipeline Execution State Change"
   ],
   "detail": {
     "state": [

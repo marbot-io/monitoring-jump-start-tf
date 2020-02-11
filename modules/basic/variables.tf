@@ -185,7 +185,7 @@ variable "dlm_policy_alert" {
 
 variable "code_pipeline_notifications" {
   type        = bool
-  description = "Receive a notification, if a CodePipeline stage succeedes."
+  description = "Receive a notification, if a CodePipeline pipeline succeedes."
   default     = true
 }
 
