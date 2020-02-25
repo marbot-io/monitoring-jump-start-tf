@@ -106,6 +106,8 @@ resource "aws_sns_topic_subscription" "marbot" {
 JSON
 }
 
+# TODO add connection event to alert if an update is available
+
 
 
 ##########################################################################
@@ -114,10 +116,17 @@ JSON
 #                                                                        #
 ##########################################################################
 
+resource "random_id" "id8" {
+	  byte_length = 8
+}
+
+
+
 resource "aws_cloudwatch_metric_alarm" "trusted_advisor_cost_optimization" {
   depends_on = [aws_sns_topic_subscription.marbot]
   count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
 
+  alarm_name          = "marbot-cost-optimization-${random_id.id8.hex}"
   alarm_description   = "Trusted Advisor Cost Optimization checks are red (created by marbot)."
   namespace           = "AWS/TrustedAdvisor"
   metric_name         = "RedChecks"
@@ -139,6 +148,7 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_fault_tolerance" {
   depends_on = [aws_sns_topic_subscription.marbot]
   count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
 
+  alarm_name          = "marbot-fault-tolerance-${random_id.id8.hex}"
   alarm_description   = "Trusted Advisor Fault Tolerance checks are red (created by marbot)."
   namespace           = "AWS/TrustedAdvisor"
   metric_name         = "RedChecks"
@@ -160,6 +170,7 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_performance" {
   depends_on = [aws_sns_topic_subscription.marbot]
   count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
 
+  alarm_name          = "marbot-performance-${random_id.id8.hex}"
   alarm_description   = "Trusted Advisor Performance checks are red (created by marbot)."
   namespace           = "AWS/TrustedAdvisor"
   metric_name         = "RedChecks"
@@ -181,6 +192,7 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_security" {
   depends_on = [aws_sns_topic_subscription.marbot]
   count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
 
+  alarm_name          = "marbot-security-${random_id.id8.hex}"
   alarm_description   = "Trusted Advisor Security checks are red (created by marbot)."
   namespace           = "AWS/TrustedAdvisor"
   metric_name         = "RedChecks"
@@ -202,6 +214,7 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_service_limits" {
   depends_on = [aws_sns_topic_subscription.marbot]
   count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
 
+  alarm_name          = "marbot-service-limits-${random_id.id8.hex}"
   alarm_description   = "Trusted Advisor Service Limits checks are red (created by marbot)."
   namespace           = "AWS/TrustedAdvisor"
   metric_name         = "RedChecks"
