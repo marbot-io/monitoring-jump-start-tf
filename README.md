@@ -30,6 +30,14 @@ terraform init
 terraform apply
 ```
 
+## Update procedure
+
+Run the following commands:
+```
+terraform init -upgrade
+terraform apply
+```
+
 ## License
 All templates are published under Apache License Version 2.0.
 

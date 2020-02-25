@@ -1238,13 +1238,3 @@ resource "aws_cloudwatch_event_target" "dlm_policy_alert" {
   target_id = "marbot"
   arn       = aws_sns_topic.marbot.arn
 }
-
-
-
-##########################################################################
-#                                                                        #
-#                                  TEST                                  #
-#                                                                        #
-##########################################################################
-
-# TODO implemenet test
