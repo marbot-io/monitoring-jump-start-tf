@@ -114,7 +114,110 @@ JSON
 #                                                                        #
 ##########################################################################
 
-# TODO implement alarms
+resource "aws_cloudwatch_metric_alarm" "trusted_advisor_cost_optimization" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
+
+  alarm_description   = "Trusted Advisor Cost Optimization checks are red (created by marbot)."
+  namespace           = "AWS/TrustedAdvisor"
+  metric_name         = "RedChecks"
+  statistic           = "Maximum"
+  period              = 21600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.marbot.arn]
+  ok_actions          = [aws_sns_topic.marbot.arn]
+  dimensions          = {
+    Category = "Cost Optimization"
+  }
+}
+
+
+
+resource "aws_cloudwatch_metric_alarm" "trusted_advisor_fault_tolerance" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
+
+  alarm_description   = "Trusted Advisor Fault Tolerance checks are red (created by marbot)."
+  namespace           = "AWS/TrustedAdvisor"
+  metric_name         = "RedChecks"
+  statistic           = "Maximum"
+  period              = 21600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.marbot.arn]
+  ok_actions          = [aws_sns_topic.marbot.arn]
+  dimensions          = {
+    Category = "Fault Tolerance"
+  }
+}
+
+
+
+resource "aws_cloudwatch_metric_alarm" "trusted_advisor_performance" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
+
+  alarm_description   = "Trusted Advisor Performance checks are red (created by marbot)."
+  namespace           = "AWS/TrustedAdvisor"
+  metric_name         = "RedChecks"
+  statistic           = "Maximum"
+  period              = 21600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.marbot.arn]
+  ok_actions          = [aws_sns_topic.marbot.arn]
+  dimensions          = {
+    Category = "Performance"
+  }
+}
+
+
+
+resource "aws_cloudwatch_metric_alarm" "trusted_advisor_security" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
+
+  alarm_description   = "Trusted Advisor Security checks are red (created by marbot)."
+  namespace           = "AWS/TrustedAdvisor"
+  metric_name         = "RedChecks"
+  statistic           = "Maximum"
+  period              = 21600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.marbot.arn]
+  ok_actions          = [aws_sns_topic.marbot.arn]
+  dimensions          = {
+    Category = "Security"
+  }
+}
+
+
+
+resource "aws_cloudwatch_metric_alarm" "trusted_advisor_service_limits" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = (data.aws_region.current.name == "us-east-1" && var.trusted_advisor) ? 1 : 0
+
+  alarm_description   = "Trusted Advisor Service Limits checks are red (created by marbot)."
+  namespace           = "AWS/TrustedAdvisor"
+  metric_name         = "RedChecks"
+  statistic           = "Maximum"
+  period              = 21600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.marbot.arn]
+  ok_actions          = [aws_sns_topic.marbot.arn]
+  dimensions          = {
+    Category = "Service Limits"
+  }
+}
+
+
 
 ##########################################################################
 #                                                                        #
