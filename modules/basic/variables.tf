@@ -183,6 +183,12 @@ variable "dlm_policy_alert" {
   default     = true
 }
 
+variable "iot_analytics_dataset_alert" {
+  type        = bool
+  description = "Receive an alert, if an IoT Analytics dataset fires an alert."
+  default     = true
+}
+
 variable "code_pipeline_notifications" {
   type        = bool
   description = "Receive a notification, if a CodePipeline pipeline succeedes."

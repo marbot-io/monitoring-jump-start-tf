@@ -1241,6 +1241,38 @@ resource "aws_cloudwatch_event_target" "dlm_policy_alert" {
 
 
 
+resource "aws_cloudwatch_event_rule" "iot_analytics_dataset_alert" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = var.iot_analytics_dataset_alert ? 1 : 0
+
+  description   = "Alerts from IoT Analytics dataset (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.iotanalytics"
+  ],
+  "detail-type": [
+    "IoT Analytics Dataset Lifecycle Notification"
+  ],
+  "detail": {
+    "state": [
+      "CONTENT_DELIVERY_FAILED"
+    ]
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "iot_analytics_dataset_alert" {
+  count = var.iot_analytics_dataset_alert ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.iot_analytics_dataset_alert[0].name
+  target_id = "marbot"
+  arn       = aws_sns_topic.marbot.arn
+}
+
+
+
 ##########################################################################
 #                                                                        #
 #                                  TEST                                  #
