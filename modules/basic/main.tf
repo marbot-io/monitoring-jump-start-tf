@@ -261,81 +261,84 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_service_limits" {
 #                                                                        #
 ##########################################################################
 
-resource "aws_sns_topic_subscription" "ami_update_notification_ecs_optimized" {
-  depends_on = [aws_sns_topic_subscription.marbot]
-  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_ecs_optimized) ? 1 : 0
-
-  topic_arn               = "arn:aws:sns:us-east-1:177427601217:ecs-optimized-amazon-ami-update"
-  protocol                = "https"
-  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
-  endpoint_auto_confirms  = true
-  delivery_policy = <<JSON
-{
-  "healthyRetryPolicy": {
-    "minDelayTarget": 1,
-    "maxDelayTarget": 60,
-    "numRetries": 100,
-    "numNoDelayRetries": 0,
-    "backoffFunction": "exponential"
-  },
-  "throttlePolicy": {
-    "maxReceivesPerSecond": 1
-  }
-}
-JSON
-}
-
-
-
-resource "aws_sns_topic_subscription" "ami_update_notification_amazon_linux" {
-  depends_on = [aws_sns_topic_subscription.marbot]
-  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_amazon_linux) ? 1 : 0
-
-  topic_arn               = "arn:aws:sns:us-east-1:137112412989:amazon-linux-ami-updates"
-  protocol                = "https"
-  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
-  endpoint_auto_confirms  = true
-  delivery_policy = <<JSON
-{
-  "healthyRetryPolicy": {
-    "minDelayTarget": 1,
-    "maxDelayTarget": 60,
-    "numRetries": 100,
-    "numNoDelayRetries": 0,
-    "backoffFunction": "exponential"
-  },
-  "throttlePolicy": {
-    "maxReceivesPerSecond": 1
-  }
-}
-JSON
-}
+# TODO Terraform bug: Error fetching subscriptions for topic ***: AuthorizationError: User: *** is not authorized to perform: SNS:ListSubscriptionsByTopic on resource: *** status code: 403, request id: ***
+#resource "aws_sns_topic_subscription" "ami_update_notification_ecs_optimized" {
+#  depends_on = [aws_sns_topic_subscription.marbot]
+#  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_ecs_optimized) ? 1 : 0
+#
+#  topic_arn               = "arn:aws:sns:us-east-1:177427601217:ecs-optimized-amazon-ami-update"
+#  protocol                = "https"
+#  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
+#  endpoint_auto_confirms  = true
+#  delivery_policy = <<JSON
+#{
+#  "healthyRetryPolicy": {
+#    "minDelayTarget": 1,
+#    "maxDelayTarget": 60,
+#    "numRetries": 100,
+#    "numNoDelayRetries": 0,
+#    "backoffFunction": "exponential"
+#  },
+#  "throttlePolicy": {
+#    "maxReceivesPerSecond": 1
+#  }
+#}
+#JSON
+#}
 
 
 
-resource "aws_sns_topic_subscription" "ami_update_notification_amazon_linux2" {
-  depends_on = [aws_sns_topic_subscription.marbot]
-  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_amazon_linux2) ? 1 : 0
+# TODO Terraform bug: Error fetching subscriptions for topic ***: AuthorizationError: User: *** is not authorized to perform: SNS:ListSubscriptionsByTopic on resource: *** status code: 403, request id: ***
+#resource "aws_sns_topic_subscription" "ami_update_notification_amazon_linux" {
+#  depends_on = [aws_sns_topic_subscription.marbot]
+#  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_amazon_linux) ? 1 : 0
+#
+#  topic_arn               = "arn:aws:sns:us-east-1:137112412989:amazon-linux-ami-updates"
+#  protocol                = "https"
+#  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
+#  endpoint_auto_confirms  = true
+#  delivery_policy = <<JSON
+#{
+#  "healthyRetryPolicy": {
+#    "minDelayTarget": 1,
+#    "maxDelayTarget": 60,
+#    "numRetries": 100,
+#    "numNoDelayRetries": 0,
+#    "backoffFunction": "exponential"
+#  },
+#  "throttlePolicy": {
+#    "maxReceivesPerSecond": 1
+#  }
+#}
+#JSON
+#}
 
-  topic_arn               = "arn:aws:sns:us-east-1:137112412989:amazon-linux-2-ami-updates"
-  protocol                = "https"
-  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
-  endpoint_auto_confirms  = true
-  delivery_policy = <<JSON
-{
-  "healthyRetryPolicy": {
-    "minDelayTarget": 1,
-    "maxDelayTarget": 60,
-    "numRetries": 100,
-    "numNoDelayRetries": 0,
-    "backoffFunction": "exponential"
-  },
-  "throttlePolicy": {
-    "maxReceivesPerSecond": 1
-  }
-}
-JSON
-}
+
+
+# TODO Terraform bug: Error fetching subscriptions for topic ***: AuthorizationError: User: *** is not authorized to perform: SNS:ListSubscriptionsByTopic on resource: *** status code: 403, request id: ***
+#resource "aws_sns_topic_subscription" "ami_update_notification_amazon_linux2" {
+#  depends_on = [aws_sns_topic_subscription.marbot]
+#  count      = (data.aws_region.current.name == "us-east-1" && var.ami_update_notification_amazon_linux2) ? 1 : 0
+#
+#  topic_arn               = "arn:aws:sns:us-east-1:137112412989:amazon-linux-2-ami-updates"
+#  protocol                = "https"
+#  endpoint                = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
+#  endpoint_auto_confirms  = true
+#  delivery_policy = <<JSON
+#{
+#  "healthyRetryPolicy": {
+#    "minDelayTarget": 1,
+#    "maxDelayTarget": 60,
+#    "numRetries": 100,
+#    "numNoDelayRetries": 0,
+#    "backoffFunction": "exponential"
+#  },
+#  "throttlePolicy": {
+#    "maxReceivesPerSecond": 1
+#  }
+#}
+#JSON
+#}
 
 
 
