@@ -390,9 +390,105 @@ resource "aws_cloudwatch_event_target" "root_user_login" {
 
 
 
-# TODO CloudWatchAlarmFiredEvent
-# TODO CloudWatchAlarmOrphanedEvent
-# TODO CloudWatchAlarmAutoCloseEvent
+resource "aws_cloudwatch_event_rule" "cloud_watch_alarm_fired" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = var.cloud_watch_alarm_fired ? 1 : 0
+
+  description   = "A CloudWatch Alarm fired (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.cloudwatch"
+  ],
+  "detail-type": [
+    "CloudWatch Alarm State Change"
+  ],
+  "detail": {
+    "state": {
+      "value": [
+        "ALARM"
+      ]
+    }
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "cloud_watch_alarm_fired" {
+  count = var.cloud_watch_alarm_fired ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.cloud_watch_alarm_fired[0].name
+  target_id = "marbot"
+  arn       = aws_sns_topic.marbot.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "cloud_watch_alarm_orphaned" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = var.cloud_watch_alarm_orphaned ? 1 : 0
+
+  description   = "A CloudWatch Alarm orphaned (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.cloudwatch"
+  ],
+  "detail-type": [
+    "CloudWatch Alarm State Change"
+  ],
+  "detail": {
+    "state": {
+      "value": [
+        "INSUFFICIENT_DATA"
+      ]
+    }
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "cloud_watch_alarm_orphaned" {
+  count = var.cloud_watch_alarm_orphaned ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.cloud_watch_alarm_orphaned[0].name
+  target_id = "marbot"
+  arn       = aws_sns_topic.marbot.arn
+}
+
+
+
+resource "aws_cloudwatch_event_rule" "cloud_watch_alarm_auto_close" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+  count      = var.cloud_watch_alarm_auto_close ? 1 : 0
+
+  description   = "A CloudWatch Alarm could be auto-closed (created by marbot)."
+  event_pattern = <<JSON
+{
+  "source": [ 
+    "aws.cloudwatch"
+  ],
+  "detail-type": [
+    "CloudWatch Alarm State Change"
+  ],
+  "detail": {
+    "state": {
+      "value": [
+        "OK"
+      ]
+    }
+  }
+}
+JSON
+}
+
+resource "aws_cloudwatch_event_target" "cloud_watch_alarm_auto_close" {
+  count = var.cloud_watch_alarm_auto_close ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.cloud_watch_alarm_auto_close[0].name
+  target_id = "marbot"
+  arn       = aws_sns_topic.marbot.arn
+}
 
 
 
