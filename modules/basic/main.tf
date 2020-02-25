@@ -106,7 +106,30 @@ resource "aws_sns_topic_subscription" "marbot" {
 JSON
 }
 
-# TODO add connection event to alert if an update is available
+
+
+resource "aws_cloudwatch_event_rule" "monitoring_jump_start" {
+  depends_on = [aws_sns_topic_subscription.marbot]
+
+  description         = "Monitoring Jump Start connection (created by marbot)"
+  schedule_expression = "rate(7 days)"
+}
+
+resource "aws_cloudwatch_event_target" "monitoring_jump_start" {
+  rule      = aws_cloudwatch_event_rule.monitoring_jump_start.name
+  target_id = "marbot"
+  arn       = aws_sns_topic.marbot.arn
+  input     = <<JSON
+{
+  "Type": "monitoring-jump-start-tf-connection",
+  "Module": "basic",
+  "Version": "0.1.0",
+  "Partition": "${data.aws_partition.current.partition}",
+  "AccountId": "${data.aws_caller_identity.current.account_id}",
+  "Region": "${data.aws_region.current.name}"
+}
+JSON
+}
 
 
 
