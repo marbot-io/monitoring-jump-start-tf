@@ -17,6 +17,8 @@ At the moment, you can monitor:
 1. Create a new directory
 2. Within the new directory, create a file `main.tf` with the following content:
 ```
+provider "aws" {}
+
 module "basic" {
   source           = "git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic"
 

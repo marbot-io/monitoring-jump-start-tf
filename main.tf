@@ -1,3 +1,5 @@
+provider "aws" {}
+
 module "basic" {
   source      = "./modules/basic"
 
