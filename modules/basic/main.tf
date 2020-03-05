@@ -10,7 +10,6 @@ data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
 
-
 ##########################################################################
 #                                                                        #
 #                                 TOPIC                                  #
@@ -110,7 +109,7 @@ resource "aws_cloudwatch_event_rule" "monitoring_jump_start" {
   depends_on = [aws_sns_topic_subscription.marbot]
 
   description         = "Monitoring Jump Start connection (created by marbot)"
-  schedule_expression = "rate(7 days)"
+  schedule_expression = "rate(30 days)"
 }
 
 resource "aws_cloudwatch_event_target" "monitoring_jump_start" {
@@ -129,8 +128,6 @@ resource "aws_cloudwatch_event_target" "monitoring_jump_start" {
 JSON
 }
 
-
-
 ##########################################################################
 #                                                                        #
 #                                 ALARMS                                 #
@@ -138,7 +135,7 @@ JSON
 ##########################################################################
 
 resource "random_id" "id8" {
-	  byte_length = 8
+    byte_length = 8
 }
 
 
@@ -251,8 +248,6 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_service_limits" {
   }
 }
 
-
-
 ##########################################################################
 #                                                                        #
 #                              SUBSCRIPTIONS                             #
@@ -337,8 +332,6 @@ resource "aws_cloudwatch_metric_alarm" "trusted_advisor_service_limits" {
 #}
 #JSON
 #}
-
-
 
 ##########################################################################
 #                                                                        #
@@ -1268,8 +1261,6 @@ resource "aws_cloudwatch_event_target" "iot_analytics_dataset_alert" {
   target_id = "marbot"
   arn       = aws_sns_topic.marbot.arn
 }
-
-
 
 ##########################################################################
 #                                                                        #
