@@ -8,9 +8,10 @@ Jump Starts are [CloudFormation templates](https://github.com/marbot-io/monitori
 
 At the moment, you can monitor:
 
-| Monitoring goal | Module Source                                                                   |
-| --------------- | ------------------------------------------------------------------------------- |
-| AWS basics      | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic` |
+| Monitoring goal      | Module Source                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| AWS basics           | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic`       |
+| RDS cluster (Aurora) | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/rds-cluster` |
 
 ## Usage
 
@@ -23,7 +24,7 @@ module "basic" {
   source           = "git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic"
 
   endpoint_id      = "" # to get this value: select a Slack channel where marbot belongs to and send a message like this: "@marbot show me my endpoint id"
-  budget_threshold = 10 # in USD
+  budget_threshold = 10 # in USD (optional)
 }
 ```
 3. Run the following commands:
