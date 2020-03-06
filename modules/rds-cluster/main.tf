@@ -17,10 +17,12 @@ data "aws_region" "current" {}
 ##########################################################################
 
 resource "aws_sns_topic" "marbot" {
+  count = var.enabled ? 1 : 0
 }
 
 resource "aws_sns_topic_policy" "marbot" {
-  arn    = aws_sns_topic.marbot.arn
+  count  = var.enabled ? 1 : 0
+  arn    = join("", aws_sns_topic.marbot.*.arn)
   policy = data.aws_iam_policy_document.topic_policy.json
 }
 
@@ -32,7 +34,7 @@ data "aws_iam_policy_document" "topic_policy" {
     resources = [aws_sns_topic.marbot.arn]
 
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "events.amazonaws.com",
         "rds.amazonaws.com",
@@ -60,9 +62,10 @@ data "aws_iam_policy_document" "topic_policy" {
 }
 
 resource "aws_sns_topic_subscription" "marbot" {
+  count      = var.enabled ? 1 : 0
   depends_on = [aws_sns_topic_policy.marbot]
 
-  topic_arn              = aws_sns_topic.marbot.arn
+  topic_arn              = join("", aws_sns_topic.marbot.*.arn)
   protocol               = "https"
   endpoint               = "https://api.marbot.io/${var.stage}/endpoint/${var.endpoint_id}"
   endpoint_auto_confirms = true
@@ -89,12 +92,13 @@ JSON
 ##########################################################################
 
 resource "random_id" "id8" {
-    byte_length = 8
+  byte_length = 8
 }
 
 
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
+  count      = var.enabled ? 1 : 0
   depends_on = [aws_sns_topic_subscription.marbot]
 
   alarm_name          = "marbot-cpu-utilization-${random_id.id8.hex}"
@@ -106,17 +110,18 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
   evaluation_periods  = 1
   comparison_operator = "GreaterThanThreshold"
   threshold           = var.cpu_utilization_threshold
-  alarm_actions       = [aws_sns_topic.marbot.arn]
-  ok_actions          = [aws_sns_topic.marbot.arn]
-  dimensions          = {
+  alarm_actions       = [join("", aws_sns_topic.marbot.*.arn)]
+  ok_actions          = [join("", aws_sns_topic.marbot.*.arn)]
+  dimensions = {
     DBClusterIdentifier = var.db_cluster_identifier
   }
-  treat_missing_data  = "notBreaching"
+  treat_missing_data = "notBreaching"
 }
 
 
 
 resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance" {
+  count      = var.enabled ? 1 : 0
   depends_on = [aws_sns_topic_subscription.marbot]
 
   alarm_name          = "marbot-cpu-credit-balance-${random_id.id8.hex}"
@@ -128,17 +133,18 @@ resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance" {
   evaluation_periods  = 1
   comparison_operator = "LessThanThreshold"
   threshold           = var.cpu_credit_balance_threshold
-  alarm_actions       = [aws_sns_topic.marbot.arn]
-  ok_actions          = [aws_sns_topic.marbot.arn]
-  dimensions          = {
+  alarm_actions       = [join("", aws_sns_topic.marbot.*.arn)]
+  ok_actions          = [join("", aws_sns_topic.marbot.*.arn)]
+  dimensions = {
     DBClusterIdentifier = var.db_cluster_identifier
   }
-  treat_missing_data  = "notBreaching"
+  treat_missing_data = "notBreaching"
 }
 
 
 
 resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
+  count      = var.enabled ? 1 : 0
   depends_on = [aws_sns_topic_subscription.marbot]
 
   alarm_name          = "marbot-freeable-memory-${random_id.id8.hex}"
@@ -150,12 +156,12 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
   evaluation_periods  = 1
   comparison_operator = "LessThanThreshold"
   threshold           = var.freeable_memory_threshold
-  alarm_actions       = [aws_sns_topic.marbot.arn]
-  ok_actions          = [aws_sns_topic.marbot.arn]
-  dimensions          = {
+  alarm_actions       = [join("", aws_sns_topic.marbot.*.arn)]
+  ok_actions          = [join("", aws_sns_topic.marbot.*.arn)]
+  dimensions = {
     DBClusterIdentifier = var.db_cluster_identifier
   }
-  treat_missing_data  = "notBreaching"
+  treat_missing_data = "notBreaching"
 }
 
 ##########################################################################
@@ -165,9 +171,10 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
 ##########################################################################
 
 resource "aws_db_event_subscription" "rds_cluster_issue" {
+  count      = var.enabled ? 1 : 0
   depends_on = [aws_sns_topic_subscription.marbot]
 
-  sns_topic   = aws_sns_topic.marbot.arn
+  sns_topic   = join("", aws_sns_topic.marbot.*.arn)
   source_type = "db-cluster"
   source_ids  = [var.db_cluster_identifier]
 }
