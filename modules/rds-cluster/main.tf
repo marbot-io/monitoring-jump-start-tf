@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "topic_policy" {
     sid       = "Sid1"
     effect    = "Allow"
     actions   = ["sns:Publish"]
-    resources = [aws_sns_topic.marbot.arn]
+    resources = [join("", aws_sns_topic.marbot.*.arn)]
 
     principals {
       type = "Service"
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "topic_policy" {
     sid       = "Sid2"
     effect    = "Allow"
     actions   = ["sns:Publish"]
-    resources = [aws_sns_topic.marbot.arn]
+    resources = [join("", aws_sns_topic.marbot.*.arn)]
 
     principals {
       type        = "AWS"
