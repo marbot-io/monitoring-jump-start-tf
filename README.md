@@ -8,22 +8,25 @@ Jump Starts are [CloudFormation templates](https://github.com/marbot-io/monitori
 
 At the moment, you can monitor:
 
-| Monitoring goal      | Module Source                                                                         |
-| -------------------- | ------------------------------------------------------------------------------------- |
-| AWS basics           | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic`       |
-| RDS cluster (Aurora) | `git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/rds-cluster` |
+| Monitoring goal      | Terraform registry                                                            |
+| -------------------- | ----------------------------------------------------------------------------- |
+| AWS basics           | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-basic       |
+| RDS cluster (Aurora) | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-rds-cluster |
 
 ## Usage
+
+> This example connects you to all relevant sources of errors, warnings, and notifications published by AWS services, and forwards them to Slack managed by marbot.
 
 1. Create a new directory
 2. Within the new directory, create a file `main.tf` with the following content:
 ```
 provider "aws" {}
 
-module "basic" {
-  source           = "git::https://github.com/marbot-io/monitoring-jump-start-tf.git//modules/basic"
+module "marbot-monitoring-basic" {
+  source  = "marbot-io/marbot-monitoring-basic/aws"
+  #version = "x.y.z"    # we recommend to pin the version
 
-  endpoint_id      = "" # to get this value: select a Slack channel where marbot belongs to and send a message like this: "@marbot show me my endpoint id"
+  endpoint_id      = "" # to get this value, select a Slack channel where marbot belongs to and send a message like this: "@marbot show me my endpoint id"
   budget_threshold = 10 # in USD (optional)
 }
 ```
@@ -35,14 +38,15 @@ terraform apply
 
 ## Update procedure
 
-Run the following commands:
+1. Update the modules's `version` to the latest version
+2. Run the following commands:
 ```
-terraform init -upgrade
+terraform get
 terraform apply
 ```
 
 ## License
-All templates are published under Apache License Version 2.0.
+All modules are published under Apache License Version 2.0.
 
 ## About
 A [marbot.io](https://marbot.io/) project. Engineered by [widdix](https://widdix.net).
