@@ -6,13 +6,14 @@ Jump Starts are [CloudFormation templates](https://github.com/marbot-io/monitori
 
 At the moment, you can monitor:
 
-| Monitoring goal      | Terraform registry                                                             |
-| -------------------- | ------------------------------------------------------------------------------ |
-| AWS basics           | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-basic        |
-| Auto Scaling Group   | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-asg          |
-| EC2 instance         | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-ec2-instance |
-| RDS cluster (Aurora) | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-rds-cluster  |
-| SQS queue            | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-sqs-queue    |
+| Monitoring goal                | Terraform registry                                                             |
+|--------------------------------|--------------------------------------------------------------------------------|
+| AWS basics                     | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-basic        |
+| Aplication Load Balancer (ALB) | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-alb          |
+| Auto Scaling Group             | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-asg          |
+| EC2 instance                   | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-ec2-instance |
+| RDS cluster (Aurora)           | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-rds-cluster  |
+| SQS queue                      | https://registry.terraform.io/modules/marbot-io/marbot-monitoring-sqs-queue    |
 
 ## Usage
 
